@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>KOFFBEANZ AR Test</title>
+  <title>KOFFBEANZ - Signature Blend AR</title>
 
   <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
 
@@ -36,7 +36,7 @@
 <body>
 
   <div id="info">
-    ☕ KOFFBEANZ AR TEST
+    ☕ KOFFBEANZ — SIGNATURE BLEND
   </div>
 
   <a-scene
@@ -47,20 +47,22 @@
 
     <a-marker
       type="pattern"
-     url="https://raw.githubusercontent.com/u6712074/koffbeanz-ar/refs/heads/main/pattern-AR%20Signature%20Blend.patt"
+      url="https://raw.githubusercontent.com/u6712074/koffbeanz-ar/refs/heads/main/pattern-AR%20Signature%20Blend.patt">
 
-     <a-image
-  src="https://raw.githubusercontent.com/u6712074/koffbeanz-ar/refs/heads/main/signature-blend.png"
-  position="0 0.8 0"
-  width="1.5"
-  height="1.5"
-  rotation="0 0 0"
-  animation="property: position; to: 0 0.95 0; dir: alternate; loop: true; dur: 1500">
-</a-image>
+      <!-- YOUR ACTUAL PRODUCT IMAGE -->
+      <a-image
+        src="https://raw.githubusercontent.com/u6712074/koffbeanz-ar/refs/heads/main/signature-blend.png"
+        position="0 0.8 0"
+        width="1.5"
+        height="1.5"
+        rotation="0 0 0"
+        animation="property: position; to: 0 0.95 0; dir: alternate; loop: true; dur: 1500">
+      </a-image>
 
+      <!-- PRODUCT NAME -->
       <a-text
-        value="IT WORKS!"
-        position="0 1.5 0"
+        value="SIGNATURE BLEND"
+        position="0 1.7 0"
         align="center"
         color="white"
         width="4">
