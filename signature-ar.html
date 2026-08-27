@@ -49,24 +49,111 @@
       type="pattern"
       url="https://raw.githubusercontent.com/u6712074/koffbeanz-ar/refs/heads/main/pattern-AR%20Signature%20Blend.patt">
 
-      <!-- YOUR ACTUAL PRODUCT IMAGE -->
+      <!-- ========================= -->
+      <!-- 3D COFFEE POUCH BODY -->
+      <!-- ========================= -->
+
+      <a-box
+        position="0 0.9 0"
+        width="1.4"
+        height="1.7"
+        depth="0.35"
+        color="#4A2C20"
+        animation="property: position; to: 0 0.98 0; dir: alternate; loop: true; dur: 1600">
+      </a-box>
+
+
+      <!-- ========================= -->
+      <!-- FRONT OF COFFEE POUCH -->
+      <!-- YOUR PRODUCT ARTWORK -->
+      <!-- ========================= -->
+
       <a-image
         src="https://raw.githubusercontent.com/u6712074/koffbeanz-ar/refs/heads/main/signature-blend.png"
-        position="0 0.8 0"
-        width="1.5"
-        height="1.5"
-        rotation="-90 0 0"
-        animation="property: position; to: 0 0.95 0; dir: alternate; loop: true; dur: 1500">
+        position="0 0.9 0.19"
+        width="1.3"
+        height="1.5">
       </a-image>
 
-      <!-- PRODUCT NAME -->
+
+      <!-- ========================= -->
+      <!-- TOP SEALED PART -->
+      <!-- ========================= -->
+
+      <a-box
+        position="0 1.82 0"
+        width="1.45"
+        height="0.18"
+        depth="0.38"
+        color="#3A2118">
+      </a-box>
+
+
+      <!-- ========================= -->
+      <!-- LEFT SIDE FOLD -->
+      <!-- ========================= -->
+
+      <a-box
+        position="-0.72 0.9 0"
+        width="0.08"
+        height="1.7"
+        depth="0.38"
+        color="#382018">
+      </a-box>
+
+
+      <!-- ========================= -->
+      <!-- RIGHT SIDE FOLD -->
+      <!-- ========================= -->
+
+      <a-box
+        position="0.72 0.9 0"
+        width="0.08"
+        height="1.7"
+        depth="0.38"
+        color="#382018">
+      </a-box>
+
+
+      <!-- ========================= -->
+      <!-- BOTTOM -->
+      <!-- ========================= -->
+
+      <a-box
+        position="0 0.04 0"
+        width="1.5"
+        height="0.12"
+        depth="0.4"
+        color="#3A2118">
+      </a-box>
+
+
+      <!-- ========================= -->
+      <!-- FLOATING PRODUCT NAME -->
+      <!-- ========================= -->
+
       <a-text
         value="SIGNATURE BLEND"
-        position="0 1.7 0"
+        position="0 2.25 0"
         align="center"
-        color="white"
+        color="#FFFFFF"
         width="4">
       </a-text>
+
+
+      <!-- ========================= -->
+      <!-- GLOWING RING -->
+      <!-- ========================= -->
+
+      <a-ring
+        position="0 0.02 0"
+        rotation="-90 0 0"
+        radius-inner="0.8"
+        radius-outer="0.85"
+        color="#C9A27E"
+        animation="property: rotation; to: -90 360 0; loop: true; dur: 4000">
+      </a-ring>
+
 
     </a-marker>
 
