@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>KOFFBEANZ - Signature Blend AR</title>
+
+  <!-- A-Frame -->
+  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+
+  <!-- AR.js -->
+  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+
+    #info {
+      position: fixed;
+      top: 20px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      color: white;
+      font-family: Arial, sans-serif;
+      font-size: 20px;
+      font-weight: bold;
+      text-shadow: 2px 2px 4px black;
+      z-index: 10;
+      pointer-events: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="info">
+    ☕ KOFFBEANZ — SIGNATURE BLEND
+  </div>
+
+  <a-scene
+    embedded
+    vr-mode-ui="enabled: false"
+    renderer="logarithmicDepthBuffer: true;"
+    arjs="sourceType: webcam;">
+
+    <!-- YOUR SIGNATURE BLEND MARKER -->
+    <a-marker
+      type="pattern"
+      patternUrl="https://raw.githubusercontent.com/u6712074/koffbeanz-ar/refs/heads/main/pattern-AR%20Signature%20Blend.patt">
+
+      <!-- Floating coffee/product placeholder -->
+      <a-cylinder
+        position="0 0.7 0"
+        radius="0.45"
+        height="0.9"
+        color="#6F4E37"
+        animation="property: rotation; to: 0 360 0; loop: true; dur: 5000">
+      </a-cylinder>
+
+      <!-- Product name -->
+      <a-text
+        value="SIGNATURE BLEND"
+        position="0 1.5 0"
+        align="center"
+        color="#FFFFFF"
+        width="3">
+      </a-text>
+
+      <!-- Floating effect -->
+      <a-ring
+        position="0 0.05 0"
+        rotation="-90 0 0"
+        radius-inner="0.55"
+        radius-outer="0.6"
+        color="#C9A27E"
+        animation="property: rotation; to: -90 360 0; loop: true; dur: 3000">
+      </a-ring>
+
+    </a-marker>
+
+    <!-- Camera -->
+    <a-entity camera></a-entity>
+
+  </a-scene>
+
+</body>
+</html>
