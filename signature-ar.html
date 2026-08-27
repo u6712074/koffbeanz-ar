@@ -16,7 +16,6 @@
 
 <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.4.5/aframe/build/aframe-ar.js"></script>
 
-
 <style>
 
 html,
@@ -35,7 +34,6 @@ body {
   touch-action: none;
 
 }
-
 
 #title {
 
@@ -68,7 +66,6 @@ body {
   pointer-events: none;
 
 }
-
 
 #instruction {
 
@@ -126,9 +123,8 @@ body {
 <div id="instruction">
 
 👆 Swipe ← → to rotate &nbsp; • &nbsp;
-👆 Swipe ↑ ↓ to tilt &nbsp; • &nbsp;
-🤏 Pinch to zoom &nbsp; • &nbsp;
-✌️ Two fingers to move
+✌️ Two fingers to move &nbsp; • &nbsp;
+🤏 Pinch to zoom
 
 </div>
 
@@ -176,7 +172,7 @@ body {
 
 
 <!-- ================================================= -->
-<!-- AR ORIENTATION -->
+<!-- AR HOLDER -->
 <!-- ================================================= -->
 
 <a-entity
@@ -205,7 +201,7 @@ body {
 
 <!-- ================================================= -->
 <!-- ROTATION HOLDER -->
-<!-- THIS IS THE CENTER PIVOT -->
+<!-- CENTER OF PRODUCT -->
 <!-- ================================================= -->
 
 <a-entity
@@ -246,14 +242,12 @@ body {
 
 
 <!-- ================================================= -->
-<!-- SIGNATURE BLEND FRONT -->
+<!-- FRONT ARTWORK -->
 <!-- ================================================= -->
 
 <a-plane
 
   position="0 0 0.201"
-
-  rotation="0 0 0"
 
   width="1.22"
 
@@ -354,7 +348,6 @@ body {
 
   material="
     color: #A77B59;
-    roughness: 0.55;
   "
 
 >
@@ -377,7 +370,6 @@ body {
 
   material="
     color: #684633;
-    roughness: 0.65;
   "
 
 >
@@ -408,7 +400,7 @@ body {
 
 
 <!-- ================================================= -->
-<!-- LEFT FRONT FOLD -->
+<!-- LEFT FOLD -->
 <!-- ================================================= -->
 
 <a-box
@@ -432,7 +424,7 @@ body {
 
 
 <!-- ================================================= -->
-<!-- RIGHT FRONT FOLD -->
+<!-- RIGHT FOLD -->
 <!-- ================================================= -->
 
 <a-box
@@ -448,30 +440,6 @@ body {
   material="
     color: #FFFFFF;
     opacity: 0.07;
-    transparent: true;
-  "
-
->
-</a-box>
-
-
-<!-- ================================================= -->
-<!-- CENTER HIGHLIGHT -->
-<!-- ================================================= -->
-
-<a-box
-
-  position="0 0 0.215"
-
-  width="0.018"
-
-  height="1.20"
-
-  depth="0.012"
-
-  material="
-    color: #FFFFFF;
-    opacity: 0.045;
     transparent: true;
   "
 
@@ -584,7 +552,6 @@ body {
 
   material="
     color: #24140E;
-    roughness: 0.80;
   "
 
 >
@@ -601,7 +568,6 @@ body {
 
   material="
     color: #24140E;
-    roughness: 0.80;
   "
 
 >
@@ -619,7 +585,7 @@ body {
 
 
 <!-- ================================================= -->
-<!-- LIGHTING -->
+<!-- LIGHTS -->
 <!-- ================================================= -->
 
 <a-light
@@ -680,31 +646,20 @@ const moveHolder =
 /* ROTATION */
 /* ================================================= */
 
-let rotationX = 0;
-
 let rotationY = 0;
+
+let startX = 0;
+
+let startRotationY = 0;
 
 
 /* ================================================= */
 /* MOVEMENT */
 /* ================================================= */
 
-let moveX = 0;
+let startCenterX = 0;
 
-let moveZ = 0;
-
-
-/* ================================================= */
-/* TOUCH START VALUES */
-/* ================================================= */
-
-let startX = 0;
-
-let startY = 0;
-
-let startRotationX = 0;
-
-let startRotationY = 0;
+let startCenterY = 0;
 
 let startMoveX = 0;
 
@@ -721,12 +676,10 @@ let startScale = 0.55;
 
 
 /* ================================================= */
-/* TWO FINGER MOVEMENT */
+/* TWO-FINGER MODE */
 /* ================================================= */
 
-let startCenterX = 0;
-
-let startCenterY = 0;
+let twoFingerMode = false;
 
 
 /* ================================================= */
@@ -741,21 +694,18 @@ document.addEventListener(
 
 
     /* ============================================= */
-    /* ONE FINGER */
+    /* ONE FINGER = ROTATION */
     /* ============================================= */
 
     if (event.touches.length === 1) {
 
 
+      twoFingerMode = false;
+
+
       startX =
         event.touches[0].clientX;
 
-      startY =
-        event.touches[0].clientY;
-
-
-      startRotationX =
-        rotationX;
 
       startRotationY =
         rotationY;
@@ -764,10 +714,13 @@ document.addEventListener(
 
 
     /* ============================================= */
-    /* TWO FINGERS */
+    /* TWO FINGERS = MOVE / ZOOM */
     /* ============================================= */
 
     if (event.touches.length === 2) {
+
+
+      twoFingerMode = true;
 
 
       const x1 =
@@ -784,7 +737,21 @@ document.addEventListener(
         event.touches[1].clientY;
 
 
-      /* Distance for zoom */
+      /* ----------------------------------------- */
+      /* CENTER */
+      /* ----------------------------------------- */
+
+      startCenterX =
+        (x1 + x2) / 2;
+
+
+      startCenterY =
+        (y1 + y2) / 2;
+
+
+      /* ----------------------------------------- */
+      /* DISTANCE */
+      /* ----------------------------------------- */
 
       const dx =
         x1 - x2;
@@ -800,16 +767,9 @@ document.addEventListener(
         );
 
 
-      /* Center of two fingers */
-
-      startCenterX =
-        (x1 + x2) / 2;
-
-      startCenterY =
-        (y1 + y2) / 2;
-
-
-      /* Current product position */
+      /* ----------------------------------------- */
+      /* CURRENT POSITION */
+      /* ----------------------------------------- */
 
       const position =
         moveHolder.getAttribute("position");
@@ -822,7 +782,9 @@ document.addEventListener(
         position.z;
 
 
-      /* Current scale */
+      /* ----------------------------------------- */
+      /* CURRENT SCALE */
+      /* ----------------------------------------- */
 
       const scale =
         rotationHolder.getAttribute("scale");
@@ -855,58 +817,36 @@ document.addEventListener(
 
 
     /* ============================================= */
-    /* ONE FINGER */
-/* ============================================= */
+    /* ONE FINGER = HORIZONTAL ROTATION ONLY */
+    /* ============================================= */
 
-    if (event.touches.length === 1) {
+    if (
+
+      event.touches.length === 1 &&
+      !twoFingerMode
+
+    ) {
 
 
       const currentX =
         event.touches[0].clientX;
 
-      const currentY =
-        event.touches[0].clientY;
-
 
       const deltaX =
         currentX - startX;
 
-      const deltaY =
-        currentY - startY;
 
-
-      /* ----------------------------------------- */
-      /* LEFT / RIGHT = ROTATION */
-      /* ----------------------------------------- */
+      /*
+       * ONLY horizontal movement
+       * affects rotation.
+       *
+       * Vertical movement is completely
+       * ignored.
+       */
 
       rotationY =
         startRotationY +
         deltaX * 0.55;
-
-
-      /* ----------------------------------------- */
-      /* UP / DOWN = TILT */
-      /* ----------------------------------------- */
-
-      rotationX =
-        startRotationX -
-        deltaY * 0.25;
-
-
-      /* Prevent upside-down flipping */
-
-      if (rotationX < -65) {
-
-        rotationX = -65;
-
-      }
-
-
-      if (rotationX > 65) {
-
-        rotationX = 65;
-
-      }
 
 
       rotationHolder.setAttribute(
@@ -914,7 +854,7 @@ document.addEventListener(
         "rotation",
 
         {
-          x: rotationX,
+          x: 0,
           y: rotationY,
           z: 0
         }
@@ -926,7 +866,7 @@ document.addEventListener(
 
     /* ============================================= */
     /* TWO FINGERS */
-/* ============================================= */
+    /* ============================================= */
 
     if (event.touches.length === 2) {
 
@@ -945,12 +885,62 @@ document.addEventListener(
         event.touches[1].clientY;
 
 
-      /* ----------------------------------------- */
-      /* CURRENT DISTANCE */
-      /* ----------------------------------------- */
+      /* ========================================= */
+      /* CENTER MOVEMENT */
+      /* ========================================= */
+
+      const currentCenterX =
+        (x1 + x2) / 2;
+
+
+      const currentCenterY =
+        (y1 + y2) / 2;
+
+
+      const deltaCenterX =
+        currentCenterX -
+        startCenterX;
+
+
+      const deltaCenterY =
+        currentCenterY -
+        startCenterY;
+
+
+      /*
+       * Move the whole product.
+       */
+
+      const newMoveX =
+        startMoveX +
+        deltaCenterX * 0.002;
+
+
+      const newMoveZ =
+        startMoveZ -
+        deltaCenterY * 0.002;
+
+
+      moveHolder.setAttribute(
+
+        "position",
+
+        {
+          x: newMoveX,
+          y: 0,
+          z: newMoveZ
+        }
+
+      );
+
+
+      /* ========================================= */
+      /* PINCH ZOOM */
+      /* ========================================= */
 
       const dx =
         x1 - x2;
+
 
       const dy =
         y1 - y2;
@@ -963,19 +953,17 @@ document.addEventListener(
         );
 
 
-      /* ----------------------------------------- */
-      /* ZOOM */
-      /* ----------------------------------------- */
-
-      const difference =
+      const distanceChange =
         currentDistance -
         startDistance;
 
 
       let newScale =
         startScale +
-        difference * 0.0015;
+        distanceChange * 0.0015;
 
+
+      /* Minimum */
 
       if (newScale < 0.35) {
 
@@ -983,6 +971,8 @@ document.addEventListener(
 
       }
 
+
+      /* Maximum */
 
       if (newScale > 0.85) {
 
@@ -999,61 +989,6 @@ document.addEventListener(
           x: newScale,
           y: newScale,
           z: newScale
-        }
-
-      );
-
-
-      /* ----------------------------------------- */
-      /* TWO-FINGER DRAG = MOVE PRODUCT */
-      /* ----------------------------------------- */
-
-      const currentCenterX =
-        (x1 + x2) / 2;
-
-      const currentCenterY =
-        (y1 + y2) / 2;
-
-
-      const centerDeltaX =
-        currentCenterX -
-        startCenterX;
-
-
-      const centerDeltaY =
-        currentCenterY -
-        startCenterY;
-
-
-      /*
-       * Horizontal movement moves
-       * the product left/right.
-       */
-
-      moveX =
-        startMoveX +
-        centerDeltaX * 0.002;
-
-
-      /*
-       * Vertical movement moves
-       * the product forward/backward
-       * on the marker.
-       */
-
-      moveZ =
-        startMoveZ -
-        centerDeltaY * 0.002;
-
-
-      moveHolder.setAttribute(
-
-        "position",
-
-        {
-          x: moveX,
-          y: 0,
-          z: moveZ
         }
 
       );
@@ -1075,29 +1010,46 @@ document.addEventListener(
 
   "touchend",
 
-  function() {
+  function(event) {
 
+
+    /*
+     * If fingers are released,
+     * remember the current rotation.
+     */
 
     const currentRotation =
       rotationHolder.getAttribute("rotation");
 
 
-    rotationX =
-      currentRotation.x;
-
     rotationY =
       currentRotation.y;
 
+
+    /*
+     * Remember the current position.
+     */
 
     const currentPosition =
       moveHolder.getAttribute("position");
 
 
-    moveX =
+    startMoveX =
       currentPosition.x;
 
-    moveZ =
+    startMoveZ =
       currentPosition.z;
+
+
+    /*
+     * Reset mode.
+     */
+
+    if (event.touches.length === 0) {
+
+      twoFingerMode = false;
+
+    }
 
   }
 
